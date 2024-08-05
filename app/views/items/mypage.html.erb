@@ -1,0 +1,22 @@
+<div class="container mx-auto flex justify-center">
+  <div class="w-19/20 bg-white shadow-md rounded-lg p-6">
+    <div class="border-b pb-4 mb-4">
+      <h1 class="text-2xl font-semibold text-gray-700">Vos informations :</h1>
+    </div>
+    <div class="space-y-4">
+      <ul class="list-none space-y-2 text-gray-600">
+        <li>Connecté en tant que : <%= current_user.email %></li>
+        <li>Prénom : <%= current_user.firstname %></li>
+        <li>Nom : <%= current_user.lastname %></li>
+        <li>Nom de la boutique : <%= current_user.shopname %></li>
+        <li>Adresse : <%= current_user.address %></li>
+        <li>Ville : <%= current_user.city %></li>
+        <li>Pays : <%= current_user.country %></li>
+        <li>Téléphone : <%= current_user.phone %></li>
+      </ul>
+    </div>
+    <div class="mt-4">
+      <%= link_to 'Editer', edit_user_registration_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    </div>
+  </div>
+</div>

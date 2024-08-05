@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  style: MyString
+  height: 1
+  depth: 1
+  price: 1
+  content: MyText
+  category: MyString
+  width: 1
+  length: 1
+  century: MyString
+  user: one
+  status: MyString
+  matter: MyString
+
+two:
+  name: MyString
+  style: MyString
+  height: 1
+  depth: 1
+  price: 1
+  content: MyText
+  category: MyString
+  width: 1
+  length: 1
+  century: MyString
+  user: two
+  status: MyString
+  matter: MyString

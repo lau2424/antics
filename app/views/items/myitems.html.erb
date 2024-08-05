@@ -1,0 +1,22 @@
+<div class="myitem-container p-4">
+  <div class="myitem-item-grid">
+    <h1 class="text-2xl font-bold mb-4">Liste des objets</h1>
+    <div class="myitem-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <% @user_items.each do |obj| %>
+        <div id="item_<%= obj.id %>" class="myitem-grid-item bg-white shadow-md rounded-lg p-4">
+          <%= image_tag 'paint.jpg', class: 'myitems-image w-full h-48 object-cover rounded-t-lg' %>
+          <div class="myitem-details p-4">
+            <h2 class="text-xl font-semibold"><%= obj.name %></h2>
+            <p class="text-gray-600"><%= obj.content %></p>
+            <p class="text-gray-800 font-bold"><%= obj.price %> €</p>
+        
+            <div class="myitem-button-container flex justify-between mt-4">
+              <%= link_to 'Edit', edit_item_path(obj), class: 'myitem-edit-link myitem-button bg-blue-500 text-white py-2 px-4 rounded' %>
+              <%= link_to 'Delete', item_path(obj), class: 'myitem-delete-link myitem-button bg-red-500 text-white py-2 px-4 rounded', data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

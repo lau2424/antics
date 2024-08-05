@@ -1,0 +1,44 @@
+<div class="min-h-screen flex flex-col items-center">
+  <div class="w-full max-w-3xl mt-8">
+    <%= search_form_for @q, html: { class: "w-full max-w-3xl" } do |f| %>
+      <div class="flex items-center space-x-4 mb-4">
+        <%= f.search_field :name_cont, placeholder: "Rechercher", class: "w-full p-2 border border-gray-300 rounded" %>
+        <%= f.submit "Rechercher", class:"bg-indigo-600 hover:bg-indigo-700  text-white p-2 rounded" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="index-top-cat mt-6 mb-8">
+    <ul class="flex space-x-4">
+      <li><button class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">Peintures</button></li>
+      <li><button class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">Sculptures</button></li>
+      <li><button class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">Argiles</button></li>
+      <li><button class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">Argenteries</button></li>
+    </ul>
+  </div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full px-4">
+  <% @items.each do |e| %>
+    <div class="flex flex-col justify-between items-center h-full max-w-[18rem] rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white mb-4">
+      <div class="flex flex-col h-full items-center text-center">
+        <div class="relative overflow-hidden bg-cover bg-no-repeat">
+          <%= link_to item_path(e) do %>
+            <%= image_tag 'paint.jpg', class: 'rounded-t-lg', title: 'Search by Voice' %>
+          <% end %>
+        </div>
+        <div class="p-2 flex flex-col flex-grow items-center text-center">
+          <h1 class="mb-1 text-xl font-medium leading-tight"><%= e.name %></h1>
+          <h2 class="text-base mt-auto"><%= e.category %></h2>
+        </div>
+      </div>
+      <ul class="w-full text-center">
+        <li class="w-full border-b-2 border-neutral-100 border-opacity-100 px-6 py-3 dark:border-white/10">
+          <% shopname = e.user.shopname.truncate(20, omission: '') %>
+          <span class="font-semibold text-blue-600 dark:text-blue-400"><%= shopname %></span>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+</div>
