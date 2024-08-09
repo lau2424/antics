@@ -3,20 +3,100 @@
     <h1 class="text-2xl font-bold mb-4">Liste des objets</h1>
     <div class="myitem-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <% @user_items.each do |obj| %>
-        <div id="item_<%= obj.id %>" class="myitem-grid-item bg-white shadow-md rounded-lg p-4">
-          <%= image_tag 'paint.jpg', class: 'myitems-image w-full h-48 object-cover rounded-t-lg' %>
-          <div class="myitem-details p-4">
-            <h2 class="text-xl font-semibold"><%= obj.name %></h2>
-            <p class="text-gray-600"><%= obj.content %></p>
-            <p class="text-gray-800 font-bold"><%= obj.price %> €</p>
-        
-            <div class="myitem-button-container flex justify-between mt-4">
-              <%= link_to 'Edit', edit_item_path(obj), class: 'myitem-edit-link myitem-button bg-blue-500 text-white py-2 px-4 rounded' %>
-              <%= link_to 'Delete', item_path(obj), class: 'myitem-delete-link myitem-button bg-red-500 text-white py-2 px-4 rounded', data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+        <div id="item_<%= obj.id %>" class="myitem-grid-item bg-white shadow-md rounded-lg p-4 flex flex-col cursor-pointer" 
+            data-item-id="<%= obj.id %>" 
+            data-item-category="<%= obj.category %>" 
+            data-item-width="<%= obj.width %>" 
+            data-item-length="<%= obj.length %>" 
+            data-item-century="<%= obj.century %>" 
+            data-item-style="<%= obj.style %>" 
+            data-item-height="<%= obj.height %>" 
+            data-item-depth="<%= obj.depth %>" 
+            data-item-status="<%= obj.status %>" 
+            data-item-matter="<%= obj.matter %>" 
+            data-item-created-at="<%= obj.created_at %>" 
+            data-item-updated-at="<%= obj.updated_at %>">
+            
+            <%= image_tag 'paint.jpg', class: 'myitems-image w-full h-48 object-cover rounded-t-lg' %>
+            <div class="myitem-details flex-grow flex flex-col justify-between p-4">
+                <div>
+                    <h2 class="text-xl font-semibold mb-2"><%= obj.name %></h2>
+                    <p class="text-gray-600 mb-2"><%= obj.content %></p>
+                </div>
+                <div>
+                    <p class="text-gray-800 font-bold mb-4"><%= obj.price %> €</p>
+                    <div class="myitem-button-container flex justify-between">
+                        <%= link_to 'Edit', edit_item_path(obj), class: 'myitem-edit-link myitem-button bg-blue-500 text-white py-2 px-4 rounded' %>
+                        <%= link_to 'Delete', item_path(obj), class: 'myitem-delete-link myitem-button bg-red-500 text-white py-2 px-4 rounded', data: {turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<div id="itemModal" class="hidden fixed z-50 inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg relative w-1/2">
+      <span class="absolute top-0 right-0 m-4 text-gray-600 cursor-pointer" id="closeModal">&times;</span>
+      <div id="modalContent">
+        <!-- Content will be dynamically injected here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.myitem-grid-item').forEach(function(card) {
+        card.addEventListener('click', function() {
+            const itemId = this.getAttribute('data-item-id');
+            const itemName = this.querySelector('h2').textContent;
+            const itemContent = this.querySelector('p').textContent;
+            const itemPrice = this.querySelector('.myitem-details p.font-bold').textContent;
+
+            const itemCategory = this.getAttribute('data-item-category');
+            const itemWidth = this.getAttribute('data-item-width');
+            const itemLength = this.getAttribute('data-item-length');
+            const itemCentury = this.getAttribute('data-item-century');
+            const itemStyle = this.getAttribute('data-item-style');
+            const itemHeight = this.getAttribute('data-item-height');
+            const itemDepth = this.getAttribute('data-item-depth');
+            const itemStatus = this.getAttribute('data-item-status');
+            const itemMatter = this.getAttribute('data-item-matter');
+            const itemCreatedAt = new Date(this.getAttribute('data-item-created-at')).toLocaleDateString();
+            const itemUpdatedAt = new Date(this.getAttribute('data-item-updated-at')).toLocaleDateString();
+            const itemImage = this.querySelector('img').src;
+
+            // Dynamically set the content of the modal with all the item's details
+            const modalContent = `
+                <img src="${itemImage}" class="w-full h-48 object-cover rounded-t-lg mb-4" />
+                <h2 class="text-2xl font-semibold mb-4">${itemName}</h2>
+                <p class="text-gray-600 mb-2"><strong>Content:</strong> ${itemContent}</p>
+                <p class="text-gray-800 font-bold mb-2"><strong>Price:</strong> ${itemPrice} €</p>
+                <p class="text-gray-600 mb-2"><strong>Category:</strong> ${itemCategory}</p>
+                <p class="text-gray-600 mb-2"><strong>Dimensions:</strong> ${itemWidth} x ${itemLength} x ${itemHeight} cm (W x L x H)</p>
+                <p class="text-gray-600 mb-2"><strong>Depth:</strong> ${itemDepth} cm</p>
+                <p class="text-gray-600 mb-2"><strong>Century:</strong> ${itemCentury}</p>
+                <p class="text-gray-600 mb-2"><strong>Style:</strong> ${itemStyle}</p>
+                <p class="text-gray-600 mb-2"><strong>Status:</strong> ${itemStatus}</p>
+                <p class="text-gray-600 mb-4"><strong>Matter:</strong> ${itemMatter}</p>
+                <p class="text-gray-600 mb-4"><strong>Created At:</strong> ${itemCreatedAt}</p>
+                <p class="text-gray-600"><strong>Updated At:</strong> ${itemUpdatedAt}</p>
+            `;
+
+            document.getElementById('modalContent').innerHTML = modalContent;
+
+            // Show the modal
+            document.getElementById('itemModal').classList.remove('hidden');
+        });
+    });
+
+    // Close modal functionality
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('itemModal').classList.add('hidden');
+    });
+});
+</script>

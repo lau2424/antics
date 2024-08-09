@@ -159,9 +159,9 @@ file_data = {
 end
 
 
-100.times do
+1000.times do
   Item.create!(
-    price: Faker::Commerce.price(range: 10..1000, as_string: true),
+    price: Faker::Commerce.price(range: 10..1000).to_i,
     content: Faker::Lorem.paragraph(sentence_count: 4),
     category: file_data[:category].sample,
     width: Faker::Number.between(from: 50, to: 200),
